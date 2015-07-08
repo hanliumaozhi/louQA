@@ -22,6 +22,7 @@
 
 <div id="wrap" class="grid_1200">
 
+    {% if not current_user.is_authenticated() %}
     <div class="login-panel">
         <section class="container">
             <div class="row">
@@ -29,14 +30,14 @@
                     <div class="page-content">
                         <h2>登陆</h2>
                         <div class="form-style form-style-3">
-                            <form>
+                            <form method="post" action="{{url_for('user.login_users')}}">
                                 <div class="form-inputs clearfix">
                                     <p class="login-text">
-                                        <input type="text" value="Username" onfocus="if (this.value == 'Username') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Username';}">
+                                        <input type="text" name="name" value="Username" onfocus="if (this.value == 'Username') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Username';}">
                                         <i class="icon-user"></i>
                                     </p>
                                     <p class="login-password">
-                                        <input type="password" value="Password" onfocus="if (this.value == 'Password') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Password';}">
+                                        <input type="password" name="password" value="Password" onfocus="if (this.value == 'Password') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Password';}">
                                         <i class="icon-lock"></i>
                                         <!-- <a href="#">Forget</a> -->
                                     </p>
@@ -62,14 +63,21 @@
             </div>
         </section>
     </div><!-- End login-panel -->
+    {% endif %}
 
 
     <div id="header-top">
         <section class="container clearfix">
             <nav class="header-top-nav">
+                {% if current_user.is_authenticated() %}
+                <ul>
+                    <li><a><i class="icon-user"></i>{{ current_user.name }}</a></li>
+                </ul>
+                {% else %}
                 <ul>
                     <li><a href="login.html" id="login-panel"><i class="icon-user"></i>登陆</a></li>
                 </ul>
+                {% endif %}
             </nav>
             <!-- <div class="header-search">
                 <form>
@@ -95,6 +103,8 @@
     </header><!-- End header -->
     {% block content %} {% endblock %}
 
+
+{% if not current_user.is_authenticated() %}
 <div class="panel-pop" id="signup">
     <h2>注册<i class="icon-remove"></i></h2>
     <div class="form-style form-style-3">
@@ -120,6 +130,7 @@
     </div>
 </div><!-- End signup -->
 <div id="signup-data" url="{{ url_for('user.signup_user')}}"></div>
+{% endif %}
 
 <!-- js -->
 <script src="static/js/jquery.min.js"></script>

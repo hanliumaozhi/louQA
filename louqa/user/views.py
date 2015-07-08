@@ -6,6 +6,7 @@ from flask import (Blueprint, request, current_app, redirect, url_for,
 from .models import User
 from sqlalchemy import or_
 from ..dbs import db
+from flask.ext.login import login_user
 
 
 user = Blueprint('user', __name__, url_prefix='/user')
@@ -26,6 +27,19 @@ def signup_user():
             db.session.add(user_instance)
             db.session.commit()
             return jsonify(status="success", info=u"创建成功")
+    except Exception as e:
+        current_app.logger.error(e)
+        return redirect(url_for('qa.index'))
+
+
+@user.route('/login', methods=['POST'])
+def login_users():
+    try:
+        user_instance = User.query.filter(User.name==request.form['name']).first()
+        if user_instance:
+            if user_instance.verify_password(request.form['password']):
+                login_user(user_instance)
+        return redirect(url_for('qa.index'))
     except Exception as e:
         current_app.logger.error(e)
         return redirect(url_for('qa.index'))

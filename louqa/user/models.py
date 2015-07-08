@@ -4,9 +4,10 @@
 from ..dbs import db
 from sqlalchemy import Column
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask.ext.login import UserMixin
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
 
