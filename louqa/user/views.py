@@ -6,7 +6,7 @@ from flask import (Blueprint, request, current_app, redirect, url_for,
 from .models import User
 from sqlalchemy import or_
 from ..dbs import db
-from flask.ext.login import login_user
+from flask.ext.login import login_user, logout_user, login_required
 
 
 user = Blueprint('user', __name__, url_prefix='/user')
@@ -43,3 +43,10 @@ def login_users():
     except Exception as e:
         current_app.logger.error(e)
         return redirect(url_for('qa.index'))
+
+
+@user.route('/logout', methods=['GET'])
+@login_required
+def logout_users():
+    logout_user()
+    return redirect(url_for('qa.index'))

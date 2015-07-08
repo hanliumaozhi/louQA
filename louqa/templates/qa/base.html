@@ -72,6 +72,7 @@
                 {% if current_user.is_authenticated() %}
                 <ul>
                     <li><a><i class="icon-user"></i>{{ current_user.name }}</a></li>
+                    <li><a href="{{url_for('user.logout_users')}}">退出</a></li>
                 </ul>
                 {% else %}
                 <ul>
