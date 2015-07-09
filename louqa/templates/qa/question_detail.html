@@ -1,0 +1,56 @@
+{% extends "qa/base.html"%}
+{% block content%}
+<div class="breadcrumbs">
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{qs.name}}</h1>
+            </div>
+            <div class="col-md-12">
+                <div class="crumbs">
+                    <a href="#">问题</a>
+                    <span class="crumbs-span">/</span>
+                    <span class="current">{{qs.name}}</span>
+                </div>
+            </div>
+        </div><!-- End row -->
+    </section><!-- End container -->
+</div><!-- End breadcrumbs -->
+
+<section class="container main-content">
+    <div class="row">
+        <div class="col-md-9">
+            <article class="question single-question question-type-normal">
+                <h2>{{ qs.name }}</h2>
+                <div class="question-type-main"><i class="icon-question-sign"></i>问题</div>
+                <div class="question-inner">
+                    {{ qs.content }}
+                </div>
+            </article>
+            <div class="about-author clearfix">
+                    <!-- <div class="author-image"> -->
+                        <!-- <a href="#" original-title="admin" class="tooltip-n"><img alt="" src="http://placehold.it/60x60/FFF/444"></a> -->
+                    <!-- </div> -->
+                <div class="author-bio">
+                    <h4>作者:</h4>
+                    {{qs.author.name}}
+                </div>
+            </div><!-- End about-author -->
+        </div>
+        {% if current_user.is_authenticated() %}
+        <aside class="col-md-3 sidebar">
+            <div class="widget">
+                    <h3 class="widget_title">用户名：{{ current_user.name }}</h3>
+                    <a href="{{url_for("user.logout_users")}}">
+                        <input type="button" value="退出登录" class="button color small">
+                    </a>
+            </div>
+        </aside>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+<script src="/static/js/questions.js"></script>
+{% endblock %}

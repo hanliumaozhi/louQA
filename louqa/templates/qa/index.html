@@ -26,4 +26,25 @@
         </div><!-- End container -->
     </div><!-- End section-warp -->
 </div>
+
+{% if current_user.is_authenticated() %}
+<section class="container main-content">
+    <div class="row">
+        <div class="col-md-9">
+        </div>
+        <aside class="col-md-3 sidebar">
+            <div class="widget">
+                    <h3 class="widget_title">用户名：{{ current_user.name }}</h3>
+                    <a href="{{url_for("user.logout_users")}}">
+                        <input type="button" value="退出登录" class="button color small">
+                    </a>
+            </div>
+        </aside>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+<script src="static/js/index.js"></script>
 {% endblock %}

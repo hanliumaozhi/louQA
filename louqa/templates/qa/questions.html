@@ -1,0 +1,49 @@
+{% extends "qa/base.html"%}
+{% block content%}
+<div class="breadcrumbs">
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>问题列表</h1>
+            </div>
+            <div class="col-md-12">
+                <div class="crumbs">
+                        <span class="current">问题列表</span>
+                </div>
+            </div>
+        </div><!-- End row -->
+    </section><!-- End container -->
+</div><!-- End breadcrumbs -->
+
+<section class="container main-content">
+    <div class="row">
+        <div class="col-md-9">
+            {% for item in qss%}
+            <a href="{{ url_for('qa.questions', question_id=item.id)}}">
+            <article class="question single-question question-type-normal">
+                <h2>{{ item.name }}</h2>
+                <div class="question-type-main"><i class="icon-question-sign"></i>问题</div>
+                <div class="question-inner">
+                    {{ item.content }}
+                </div>
+            </article>
+            </a>
+            {% endfor %}
+        </div>
+        {% if current_user.is_authenticated() %}
+        <aside class="col-md-3 sidebar">
+            <div class="widget">
+                    <h3 class="widget_title">用户名：{{ current_user.name }}</h3>
+                    <a href="{{url_for("user.logout_users")}}">
+                        <input type="button" value="退出登录" class="button color small">
+                    </a>
+            </div>
+        </aside>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+<script src="/static/js/questionlist.js"></script>
+{% endblock %}

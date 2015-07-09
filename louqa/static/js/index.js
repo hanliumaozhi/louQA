@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $("#nav-index").addClass("current_page_item");
     $("#submit-button").click(function(){
         var name = $("#name").val();
         var email = $("#email").val();
