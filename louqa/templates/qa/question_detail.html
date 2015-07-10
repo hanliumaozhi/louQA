@@ -33,10 +33,69 @@
                     <!-- </div> -->
                 <div class="author-bio">
                     <h4>作者:</h4>
-                    {{qs.author.name}}
+                    <p>{{ qs.author.name }}</p>
+                </div><!-- End about-author -->
+            </div>
+            <div id="commentlist" class="page-content">
+                <div class="boxedtitle page-title"><h2>答案 ( <span class="color">{{qs.answers_count}}</span> )</h2></div>
+                <ol class="commentlist clearfix">
+                    {% for ans in qs.answers%}
+                         <li class="comment">
+                               <div class="comment-body comment-body-answered clearfix">
+                                    <div class="avatar"><img alt="" src="http://placehold.it/60x60/FFF/444"></div>
+                                    <div class="comment-text">
+                                        <div class="author clearfix">
+                                            <div class="comment-author"><a href="#">{{ ans.author.name }}</a></div>
+                                            <div class="comment-meta">
+                                                <div class="date"><i class="icon-time"></i> {{ans.create_time}}</div>
+                                            </div>
+                                            <a class="comment-reply" href="#respond" ans-id="{{ ans.id }}" id="reply-answer"><i class="icon-reply"></i>回复</a>
+                                        </div>
+                                        <div class="text">
+                                            <p> {{ ans.content }}</p>
+                                        </div>
+                                    </div>
+                               </div>
+                               <ul class="children">
+                                   {% for cm in ans.comments%}
+                                    <li class="comment">
+                                        <div class="comment-body comment-body-answered clearfix">
+                                            <div class="avatar"><img alt="" src="http://placehold.it/60x60/FFF/444"></div>
+                                            <div class="comment-text">
+                                                <div class="author clearfix">
+                                                    <div class="comment-author"><a href="#">{{ cm.author.name }}</a></div>
+                                                    <div class="comment-meta">
+                                                        <div class="date"><i class="icon-time"></i> {{cm.create_time}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="text">
+                                                    <p> {{ cm.content }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                               </ul>
+                         </li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <div id="respond" class="comment-respond page-content clearfix">
+                <div class="boxedtitle page-title"><h2>提交回复</h2></div>
+                <div id="reply-info" rtype="1" rid="" qs-url="{{url_for('qa.add_answer', question_id=qs.id)}}"></div>
+                    <form action="" method="post" id="commentform" class="comment-form">
+                        <div id="respond-textarea">
+                            <p>
+                                <label class="required" for="comment">回复<span>*</span></label>
+                                <textarea id="comment" name="comment" aria-required="true" cols="58" rows="8"></textarea>
+                            </p>
+                        </div>
+                        <p class="form-submit">
+                            <input name="submit" type="button" id="submit" value="提交" class="button small color">
+                        </p>
+                    </form>
                 </div>
-            </div><!-- End about-author -->
-        </div>
+            </div>
         {% if current_user.is_authenticated() %}
         <aside class="col-md-3 sidebar">
             <div class="widget">

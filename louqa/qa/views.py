@@ -60,3 +60,40 @@ def questions(question_id):
         current_app.logger.error(e)
         return redirect(url_for('qa.index'))
 
+
+@qa.route('/question/<int:question_id>/answer', methods=['POST'])
+def add_answer(question_id):
+    try:
+        if not current_user.is_authenticated():
+            return jsonify(status="error", info=u"请先登录")
+        question_instance = Question.query.filter(Question.id==question_id).first()
+        if not question_instance:
+            return jsonify(status="error", info=u"不存在该问题")
+        else:
+            if request.form['rtype'] == "1":
+                answer_instance = Answer()
+                answer_instance.content = request.form['content']
+                answer_instance.author_id = current_user.id
+                answer_instance.question_id = question_id
+                question_instance.answers_count += 1
+                db.session.add(question_instance)
+                db.session.add(answer_instance)
+            elif request.form['rtype'] == "2":
+                answer_instance = Answer.query.filter(Answer.id==request.form['rid']).first()
+                if not answer_instance:
+                    return jsonify(status="error", info=u"错误")
+                comment_instance = Comment()
+                comment_instance.content = request.form['content']
+                comment_instance.author_id = current_user.id
+                comment_instance.answer_id = answer_instance.id
+                answer_instance.comments_count += 1
+                db.session.add(answer_instance)
+                db.session.add(comment_instance)
+            else:
+                return jsonify(status="error", info=u"错误")
+
+            db.session.commit()
+            return jsonify(status="success", info=u"回复成功")
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(status="error", info=u"错误")
